@@ -1,0 +1,196 @@
+/* Background (library image) */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f') no-repeat center center / cover;
+  min-height: 100vh;
+  display: grid;
+  place-items: start center;
+}
+
+.container {
+  width: min(960px, 92vw);
+  margin: 40px 0;
+}
+
+/* Cards and general UI */
+.card {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(3px);
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.25);
+}
+
+.hidden { display: none; }
+
+h1, h2, h3 {
+  margin: 10px 0 16px;
+  color: #222;
+}
+
+.muted { color: #666; }
+
+.form {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 4px;
+}
+.form.compact {
+  grid-template-columns: 1fr;
+}
+input, select, textarea, button {
+  font-size: 16px;
+}
+input, select, textarea {
+  padding: 10px 12px;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  outline: none;
+}
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  background: #0077cc;
+  color: #fff;
+  cursor: pointer;
+}
+button:hover { background: #0062a6; }
+button.secondary {
+  background: #eef1f5;
+  color: #222;
+}
+button.secondary:hover {
+  background: #e2e7ee;
+}
+
+/* App Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.userbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0 12px;
+}
+.tab {
+  background: #eef1f5;
+  color: #222;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+.tab.active {
+  background: #0077cc;
+  color: #fff;
+}
+.tabpanel.hidden { display: none; }
+
+/* Profile */
+.profile {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 24px;
+}
+.badges-help {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  color: #fff;
+}
+.bronze { background: #cd7f32; }
+.silver { background: #c0c0c0; color:#222; }
+.gold { background: #ffd700; color:#222; }
+.platinum { background: #e5e4e2; color:#111; }
+
+/* Books */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 6px 0 14px;
+}
+#bookList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+.book-card {
+  background: #f9fafb;
+  border: 1px solid #e7e7e7;
+  border-radius: 12px;
+  padding: 14px;
+}
+.book-card h4 { margin: 4px 0 8px; }
+.tag {
+  display: inline-block;
+  background: #eef1f5;
+  color: #333;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+/* Reviews */
+.review-card {
+  background: #ffffff;
+  border: 1px solid #e7e7e7;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 10px 0;
+}
+.review-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.review-meta {
+  color: #666;
+  font-size: 14px;
+}
+.stars {
+  color: #f5a623;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+.likes {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
+.likes button {
+  background: #eef1f5;
+  color: #222;
+  padding: 4px 10px;
+  font-size: 14px;
+}
+.likes button.active {
+  outline: 2px solid #0077cc;
+}
