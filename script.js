@@ -1,425 +1,159 @@
-/* -------------------------
-   Data & Storage Helpers
---------------------------*/
+// Users
+let users = [];
+let currentUser = null;
 
-// Demo catalog
-const BOOKS = [
-  { id: 1,  title: "The Time Machine",         genre: "Fiction" },
-  { id: 2,  title: "Sapiens",                   genre: "Non-Fiction" },
-  { id: 3,  title: "A Brief History of Time",   genre: "Science" },
-  { id: 4,  title: "The Art of War",            genre: "History" },
-  { id: 5,  title: "Harry Potter",              genre: "Fantasy" },
-  { id: 6,  title: "1984",                      genre: "Fiction" },
-  { id: 7,  title: "Educated",                  genre: "Non-Fiction" },
-  { id: 8,  title: "Cosmos",                    genre: "Science" },
-  { id: 9,  title: "Guns, Germs, and Steel",    genre: "History" },
-  { id: 10, title: "The Lord of the Rings",     genre: "Fantasy" },
-];
+// Genres
+const genres = ["Love Triangles", "Romance", "Thriller", "Horror", "Fantasy", "Sci-Fi", "Mystery", "Biography", "Classics", "Education"];
 
-const LS_KEYS = {
-  users: "brp_users",
-  current: "brp_current_user",
-  reviews: "brp_reviews" // { [bookId]: Review[] }
+// Books Data
+const booksData = {
+  "Love Triangles": [
+    {title:"The Summer I Turned Pretty", author:"Jenny Han", readLink:"https://www.pdfdrive.com/the-summer-i-turned-pretty-e194538609.html", watchLink:"https://www.primevideo.com/detail/0MRYK4XMS4LMR1Z5TMCNEPZQXR", buyLink:"https://www.amazon.in/Summer-I-Turned-Pretty/dp/1416968296"},
+    {title:"Never Have I Ever", author:"Mindy Kaling", readLink:"https://www.pdfdrive.com/never-have-i-ever-e194540000.html", watchLink:"https://www.netflix.com/title/80211991", buyLink:"https://www.amazon.in/Never-Have-Ever/dp/B09XYZ"},
+    {title:"XO, Kitty", author:"Jenny Han", readLink:"https://www.pdfdrive.com/xo-kitty-e194540001.html", watchLink:"https://www.netflix.com/title/81405344", buyLink:"https://www.amazon.in/XO-Kitty/dp/123456"},
+    {title:"True Beauty", author:"Yaongyeon", readLink:"https://www.webtoons.com/en/romance/true-beauty/list?title_no=1436", watchLink:"https://www.netflix.com/title/81417185", buyLink:"https://www.amazon.in/True-Beauty/dp/123456"},
+    {title:"My Life With Walter Boys", author:"Ali Novak", readLink:"https://www.pdfdrive.com/my-life-with-walter-boys-e194540002.html", watchLink:"#", buyLink:"https://www.amazon.in/My-Life-With-Walter-Boys/dp/0062018125"},
+    {title:"To All the Boys I’ve Loved Before", author:"Jenny Han", readLink:"https://www.pdfdrive.com/to-all-the-boys-ive-loved-before-e194540003.html", watchLink:"https://www.netflix.com/title/81012345", buyLink:"https://www.amazon.in/To-All-the-Boys-Ive-Loved-Before/dp/0143132049"},
+    {title:"Dumplin’", author:"Julie Murphy", readLink:"https://www.pdfdrive.com/dumplin-e194540004.html", watchLink:"https://www.netflix.com/title/81076543", buyLink:"https://www.amazon.in/Dumplin/dp/0147514892"},
+    {title:"The Selection", author:"Kiera Cass", readLink:"https://www.pdfdrive.com/the-selection-e194540005.html", watchLink:"#", buyLink:"https://www.amazon.in/The-Selection/dp/0062059940"},
+    {title:"Anna and the French Kiss", author:"Stephanie Perkins", readLink:"https://www.pdfdrive.com/anna-and-the-french-kiss-e194540006.html", watchLink:"#", buyLink:"https://www.amazon.in/Anna-and-the-French-Kiss/dp/0147514024"},
+    {title:"The Summer of Chasing Mermaids", author:"Sarah Ockler", readLink:"https://www.pdfdrive.com/the-summer-of-chasing-mermaids-e194540007.html", watchLink:"#", buyLink:"https://www.amazon.in/The-Summer-of-Chasing-Mermaids/dp/0062071243"}
+  ],
+  "Romance": [
+    {title:"Bridgerton", author:"Julia Quinn", readLink:"#", watchLink:"https://www.netflix.com/title/80232398", buyLink:"https://www.amazon.in/Bridgerton/dp/1501111101"},
+    {title:"Pride and Prejudice", author:"Jane Austen", readLink:"#", watchLink:"#", buyLink:"https://www.amazon.in/Pride-and-Prejudice/dp/1503290565"},
+    {title:"Outlander", author:"Diana Gabaldon", readLink:"#", watchLink:"https://www.starz.com/us/en/series/0e1ee20d-4b14-4d08-a36c-c276e2583b07", buyLink:"https://www.amazon.in/Outlander/dp/0440212561"},
+    {title:"The Notebook", author:"Nicholas Sparks", readLink:"#", watchLink:"#", buyLink:"https://www.amazon.in/The-Notebook/dp/0446605239"},
+    {title:"Me Before You", author:"Jojo Moyes", readLink:"#", watchLink:"https://www.netflix.com/title/70153404", buyLink:"https://www.amazon.in/Me-Before-You/dp/0143124544"},
+    {title:"A Court of Thorns and Roses", author:"Sarah J. Maas", readLink:"#", watchLink:"#", buyLink:"https://www.amazon.in/A-Court-of-Thorns-and-Roses/dp/1619634448"},
+    {title:"The Kiss Quotient", author:"Helen Hoang", readLink:"#", watchLink:"#", buyLink:"https://www.amazon.in/The-Kiss-Quotient/dp/0451490800"},
+    {title:"Twilight Saga", author:"Stephenie Meyer", readLink:"#", watchLink:"https://www.netflix.com/title/70143860", buyLink:"https://www.amazon.in/Twilight/dp/0316015849"},
+    {title:"It Ends With Us", author:"Colleen Hoover", readLink:"#", watchLink:"#", buyLink:"https://www.amazon.in/It-Ends-With-Us/dp/1501110365"},
+    {title:"The Fault in Our Stars", author:"John Green", readLink:"#", watchLink:"#", buyLink:"https://www.amazon.in/The-Fault-in-Our-Stars/dp/014242417X"}
+  ]
 };
 
-function lsGet(key, fallback) {
-  try {
-    return JSON.parse(localStorage.getItem(key)) ?? fallback;
-  } catch {
-    return fallback;
-  }
-}
-function lsSet(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
-}
+// --- New feature data ---
+let readLater = [];
+let reviews = {};
 
-function getUsers() { return lsGet(LS_KEYS.users, []); }
-function saveUsers(users) { lsSet(LS_KEYS.users, users); }
+// Render genres
+const genresPage = document.getElementById("genresPage");
+genres.forEach(g => {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.onclick = () => showBooks(g);
+  card.innerHTML = `<img src="${g.toLowerCase().replace(' ','_')}.jpg" alt="${g}"><h3>${g}</h3>`;
+  genresPage.appendChild(card);
+});
 
-function setCurrentUser(username) { lsSet(LS_KEYS.current, username); }
-function getCurrentUser() { return lsGet(LS_KEYS.current, null); }
-function clearCurrentUser() { localStorage.removeItem(LS_KEYS.current); }
+// Show books of selected genre
+function showBooks(genre) {
+  document.getElementById("introPage").style.display = "none";
+  document.getElementById("genresPage").style.display = "none";
+  document.getElementById("booksPage").style.display = "block";
+  document.getElementById("genreTitle").textContent = genre;
 
-function getAllReviews() { return lsGet(LS_KEYS.reviews, {}); }
-function saveAllReviews(map) { lsSet(LS_KEYS.reviews, map); }
-
-function ensureReviewStore() {
-  const map = getAllReviews();
-  if (Object.keys(map).length === 0) {
-    // Seed some random reviews
-    const sampleUsers = ["Alice", "Bob", "Charlie", "Dora", "Evan", "Fiona"];
-    const sampleTexts = [
-      "Loved the pacing and ideas.",
-      "Informative and engaging!",
-      "A bit slow in the middle, but worth it.",
-      "Fantastic world-building.",
-      "Great read, would recommend.",
-      "Classic—still relevant today."
-    ];
-    BOOKS.forEach(b => {
-      const count = Math.floor(Math.random() * 3); // 0-2 reviews
-      if (count > 0) {
-        map[b.id] = Array.from({ length: count }).map((_, i) => ({
-          id: `${b.id}-${Date.now()}-${i}`,
-          user: sampleUsers[Math.floor(Math.random() * sampleUsers.length)],
-          stars: 3 + Math.floor(Math.random() * 3), // 3-5
-          text: sampleTexts[Math.floor(Math.random() * sampleTexts.length)],
-          likes: [],
-          dislikes: [],
-          createdAt: Date.now() - Math.floor(Math.random() * 100000000),
-        }));
-      }
-    });
-    saveAllReviews(map);
-  }
-}
-
-/* -------------------------
-   Auth
---------------------------*/
-function signup(username, password) {
-  const users = getUsers();
-  if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
-    return { ok: false, msg: "Username already exists." };
-  }
-  users.push({ username, password }); // demo only (not secure)
-  saveUsers(users);
-  setCurrentUser(username);
-  return { ok: true };
-}
-
-function login(username, password) {
-  const users = getUsers();
-  const u = users.find(u => u.username === username && u.password === password);
-  if (!u) return { ok: false, msg: "Invalid username or password." };
-  setCurrentUser(username);
-  return { ok: true };
-}
-
-/* -------------------------
-   UI Elements
---------------------------*/
-const el = (id) => document.getElementById(id);
-
-const signupPage  = el("signupPage");
-const loginPage   = el("loginPage");
-const appPage     = el("appPage");
-const bookPage    = el("bookPage");
-
-const helloUser   = el("helloUser");
-const profileUser = el("profileUser");
-const reviewCount = el("reviewCount");
-const userBadge   = el("userBadge");
-
-const bookList    = el("bookList");
-const genreFilter = el("genreFilter");
-
-const bookTitleHeader = el("bookTitleHeader");
-const bookGenreHeader = el("bookGenreHeader");
-const reviewsList     = el("reviewsList");
-
-/* -------------------------
-   Navigation / Views
---------------------------*/
-function show(section) {
-  // hide all
-  [signupPage, loginPage, appPage, bookPage].forEach(s => s.classList.add("hidden"));
-  section.classList.remove("hidden");
-}
-
-function switchToTab(tabId) {
-  document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
-  document.querySelectorAll(".tabpanel").forEach(p => p.classList.add("hidden"));
-  document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add("active");
-  document.getElementById(tabId).classList.remove("hidden");
-}
-
-/* -------------------------
-   Rendering: Books & Reviews
---------------------------*/
-function renderBooks() {
-  const filter = genreFilter.value;
-  const items = BOOKS.filter(b => !filter || b.genre === filter);
-
-  bookList.innerHTML = "";
-  items.forEach(b => {
+  const container = document.getElementById("booksContainer");
+  container.innerHTML = "";
+  booksData[genre].forEach(book => {
+    const id = book.title.replace(/\s+/g,'-'); // safe id
     const card = document.createElement("div");
     card.className = "book-card";
     card.innerHTML = `
-      <span class="tag">${b.genre}</span>
-      <h4>${b.title}</h4>
-      <button data-open="${b.id}">Open</button>
+      <img src="${genre.toLowerCase().replace(' ','_')}.jpg" alt="${book.title}">
+      <h3>${book.title}</h3>
+      <p>Author: ${book.author}</p>
+      <a href="${book.readLink}" target="_blank">📖 Read Book</a>
+      <a href="${book.watchLink}" target="_blank">🎬 Watch Series</a>
+      <a href="${book.buyLink}" target="_blank">🛒 Buy Book</a>
+      <button onclick="addToReadLater('${book.title}')">📌 Read Later</button>
+      <button onclick="likeBook('${book.title}')">👍 Like</button>
+      <button onclick="dislikeBook('${book.title}')">👎 Dislike</button>
+      <textarea id="review-${id}" placeholder="Write a review..."></textarea>
+      <button onclick="submitReview('${book.title}')">Submit Review</button>
+      <div id="reviews-${id}" class="reviews"></div>
     `;
-    card.querySelector("button").addEventListener("click", () => openBook(b.id));
-    bookList.appendChild(card);
+    container.appendChild(card);
   });
 }
 
-function openBook(bookId) {
-  const book = BOOKS.find(b => b.id === bookId);
-  if (!book) return;
-  bookTitleHeader.textContent = book.title;
-  bookGenreHeader.textContent = `Genre: ${book.genre}`;
-  bookPage.dataset.bookId = String(bookId);
-  renderReviews(bookId);
-  show(bookPage);
+// Back to genres
+function backToGenres() {
+  document.getElementById("booksPage").style.display = "none";
+  document.getElementById("settingsPage").style.display = "none"; // <-- NEW
+  document.getElementById("genresPage").style.display = "grid";
+  document.getElementById("introPage").style.display = "block";
 }
 
-function renderReviews(bookId) {
-  const map = getAllReviews();
-  const list = map[bookId] ?? [];
-  list.sort((a,b) => b.createdAt - a.createdAt);
+// Intro to genres
+function showGenres() {
+  document.getElementById("introPage").style.display = "none";
+  document.getElementById("genresPage").style.display = "grid";
+}
 
-  reviewsList.innerHTML = "";
-  if (list.length === 0) {
-    reviewsList.innerHTML = `<p class="muted">No reviews yet. Be the first!</p>`;
-    return;
+// --- New Features ---
+
+// Read Later
+function addToReadLater(title) {
+  if (!readLater.includes(title)) {
+    readLater.push(title);
+    alert(title + " added to Read Later!");
   }
-
-  const current = getCurrentUser();
-  list.forEach(r => {
-    const wrap = document.createElement("div");
-    wrap.className = "review-card";
-    const liked = current && r.likes.includes(current);
-    const disliked = current && r.dislikes.includes(current);
-
-    wrap.innerHTML = `
-      <div class="review-head">
-        <div class="review-meta">
-          <strong>${r.user}</strong> • <span class="stars">${"⭐".repeat(r.stars)}</span>
-        </div>
-        <div class="review-meta">${new Date(r.createdAt).toLocaleString()}</div>
-      </div>
-      <p>${r.text}</p>
-      <div class="likes">
-        <button class="likeBtn ${liked ? "active" : ""}" data-id="${r.id}">👍 <span>${r.likes.length}</span></button>
-        <button class="dislikeBtn ${disliked ? "active" : ""}" data-id="${r.id}">👎 <span>${r.dislikes.length}</span></button>
-      </div>
-    `;
-
-    // Like / Dislike handlers
-    const likeBtn = wrap.querySelector(".likeBtn");
-    const dislikeBtn = wrap.querySelector(".dislikeBtn");
-
-    likeBtn.addEventListener("click", () => toggleReaction(bookId, r.id, "like"));
-    dislikeBtn.addEventListener("click", () => toggleReaction(bookId, r.id, "dislike"));
-
-    reviewsList.appendChild(wrap);
-  });
 }
+function openSettings() {
+  document.getElementById("genresPage").style.display = "none";
+  document.getElementById("booksPage").style.display = "none";
+  document.getElementById("introPage").style.display = "none";
+  document.getElementById("settingsPage").style.display = "block";
 
-function toggleReaction(bookId, reviewId, type) {
-  const user = getCurrentUser();
-  if (!user) return;
-
-  const map = getAllReviews();
-  const list = map[bookId] ?? [];
-  const r = list.find(x => x.id === reviewId);
-  if (!r) return;
-
-  const isLike = type === "like";
-  const mineInLikes = r.likes.includes(user);
-  const mineInDislikes = r.dislikes.includes(user);
-
-  if (isLike) {
-    // toggle like
-    if (mineInLikes) {
-      r.likes = r.likes.filter(u => u !== user);
-    } else {
-      r.likes.push(user);
-      // remove dislike if present
-      if (mineInDislikes) r.dislikes = r.dislikes.filter(u => u !== user);
-    }
+  const list = document.getElementById("readLaterList");
+  list.innerHTML = "";
+  if (readLater.length === 0) {
+    list.innerHTML = "<p>No books saved yet.</p>";
   } else {
-    // toggle dislike
-    if (mineInDislikes) {
-      r.dislikes = r.dislikes.filter(u => u !== user);
-    } else {
-      r.dislikes.push(user);
-      if (mineInLikes) r.likes = r.likes.filter(u => u !== user);
-    }
-  }
-
-  map[bookId] = list;
-  saveAllReviews(map);
-  renderReviews(bookId);
-}
-
-/* -------------------------
-   Add Review + Profile stats
---------------------------*/
-function submitReview(bookId, stars, text) {
-  const user = getCurrentUser();
-  if (!user) return;
-
-  const map = getAllReviews();
-  const list = map[bookId] ?? [];
-
-  list.push({
-    id: `${bookId}-${user}-${Date.now()}`,
-    user,
-    stars: Number(stars),
-    text,
-    likes: [],
-    dislikes: [],
-    createdAt: Date.now(),
-  });
-
-  map[bookId] = list;
-  saveAllReviews(map);
-  updateProfile();
-  renderReviews(bookId);
-}
-
-function countUniqueBooksReviewedBy(user) {
-  const map = getAllReviews();
-  const bookIds = Object.keys(map).map(k => Number(k));
-  const unique = new Set();
-  bookIds.forEach(id => {
-    if ((map[id] || []).some(r => r.user === user)) unique.add(id);
-  });
-  return unique.size;
-}
-
-function badgeForCount(n) {
-  if (n >= 50) return { name: "Platinum", cls: "platinum" };
-  if (n >= 30) return { name: "Gold", cls: "gold" };
-  if (n >= 20) return { name: "Silver", cls: "silver" };
-  if (n >= 10) return { name: "Bronze", cls: "bronze" };
-  return { name: "None", cls: "" };
-}
-
-function updateProfile() {
-  const user = getCurrentUser();
-  if (!user) return;
-  profileUser.textContent = user;
-  helloUser.textContent = `Hi, ${user}!`;
-  const count = countUniqueBooksReviewedBy(user);
-  reviewCount.textContent = String(count);
-  const badge = badgeForCount(count);
-  userBadge.textContent = badge.name;
-  userBadge.className = `badge ${badge.cls}`.trim();
-}
-
-/* -------------------------
-   Event Wiring
---------------------------*/
-window.addEventListener("DOMContentLoaded", () => {
-  // Seed reviews on first run
-  ensureReviewStore();
-
-  // Auth nav links
-  document.getElementById("goLogin").addEventListener("click", (e) => {
-    e.preventDefault(); show(loginPage);
-  });
-  document.getElementById("goSignup").addEventListener("click", (e) => {
-    e.preventDefault(); show(signupPage);
-  });
-
-  // Signup
-  document.getElementById("signupForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const u = document.getElementById("signupUser").value.trim();
-    const p = document.getElementById("signupPass").value;
-    if (!u || !p) return;
-    const res = signup(u, p);
-    if (!res.ok) { alert(res.msg); return; }
-    // go to app
-    show(appPage);
-    switchToTab("profileTab");
-    updateProfile();
-    renderBooks();
-  });
-
-  // Login
-  document.getElementById("loginForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const u = document.getElementById("loginUser").value.trim();
-    const p = document.getElementById("loginPass").value;
-    const res = login(u, p);
-    if (!res.ok) { alert(res.msg); return; }
-    show(appPage);
-    switchToTab("profileTab");
-    updateProfile();
-    renderBooks();
-  });
-
-  // Logout
-  document.getElementById("logoutBtn").addEventListener("click", () => {
-    clearCurrentUser();
-    show(loginPage);
-  });
-
-  // Tabs
-  document.querySelectorAll(".tab").forEach(btn => {
-    btn.addEventListener("click", () => {
-      switchToTab(btn.dataset.tab);
+    readLater.forEach(book => {
+      const p = document.createElement("p");
+      p.textContent = "📌 " + book;
+      list.appendChild(p);
     });
-  });
-
-  // Genre filter
-  genreFilter.addEventListener("change", renderBooks);
-
-  // Back from book page
-  document.getElementById("backToBooks").addEventListener("click", () => {
-    show(appPage);
-    switchToTab("booksTab");
-  });
-
-  // Submit review
-  document.getElementById("reviewForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const bookId = Number(bookPage.dataset.bookId);
-    const stars = document.getElementById("reviewStars").value;
-    const text = document.getElementById("reviewText").value.trim();
-    if (!stars || !text) return;
-    submitReview(bookId, stars, text);
-    e.target.reset();
-  });
-
-  // Auto-login if user exists
-  const current = getCurrentUser();
-  if (current) {
-    show(appPage);
-    switchToTab("profileTab");
-    updateProfile();
-    renderBooks();
-  } else {
-    show(signupPage);
   }
 
-  // Handle adding new book
-document.getElementById("addBookForm").addEventListener("submit", function(e){
-  e.preventDefault();
-  const title = document.getElementById("newBookTitle").value.trim();
-  const genre = document.getElementById("newBookGenre").value;
+  // NEW: Add "Go back to Genres" button
+  const backBtn = document.createElement("button");
+  backBtn.textContent = "⬅ Back to Genres";
+  backBtn.onclick = backToGenres;
+  list.appendChild(backBtn);
+}
 
-  if(!title || !genre) return;
+// Likes
+function likeBook(title) { alert("You liked " + title + "!"); }
+function dislikeBook(title) { alert("You disliked " + title + "!"); }
 
-  const newBook = {
-    id: Date.now(),  // unique ID
-    title: title,
-    genre: genre
-  };
+// Reviews
+function submitReview(title) {
+  const id = title.replace(/\s+/g,'-');
+  const input = document.getElementById(`review-${id}`);
+  const text = input.value;
+  if (text.trim() === "") return;
+  if (!reviews[title]) reviews[title] = [];
+  reviews[title].push(text);
 
-  books.push(newBook); // add to books array
-  localStorage.setItem("books", JSON.stringify(books)); // save in storage
+  const div = document.getElementById(`reviews-${id}`);
+  div.innerHTML = reviews[title].map(r => `<p>⭐ ${r}</p>`).join("");
+  input.value = "";
+}
 
-  alert("📚 Book added successfully!");
-  document.getElementById("addBookForm").reset();
-  renderBooks(); // refresh book list
-});
-let books = JSON.parse(localStorage.getItem("books")) || [
-  {id:1, title:"The Time Machine", genre:"Fiction"},
-  {id:2, title:"Sapiens", genre:"Non-Fiction"},
-  {id:3, title:"A Brief History of Time", genre:"Science"},
-  {id:4, title:"The Art of War", genre:"History"},
-  {id:5, title:"Harry Potter", genre:"Fantasy"},
-  {id:6, title:"1984", genre:"Fiction"},
-  {id:7, title:"Educated", genre:"Non-Fiction"},
-  {id:8, title:"Cosmos", genre:"Science"},
-  {id:9, title:"Guns, Germs, and Steel", genre:"History"},
-  {id:10, title:"Lord of the Rings", genre:"Fantasy"}
-];
-
-});
+// Login popup
+function openLogin() { document.getElementById("loginPopup").style.display = "flex"; }
+function closeLogin() { document.getElementById("loginPopup").style.display = "none"; }
+function login() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+  if(!username || !password){ alert("Enter username and password"); return; }
+  let user = users.find(u => u.username===username);
+  if(!user) user = {username,password,badge:"New"} , users.push(user);
+  currentUser = user;
+  alert("Logged in as "+currentUser.username);
+  closeLogin();
+}

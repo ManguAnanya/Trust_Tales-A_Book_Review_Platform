@@ -1,132 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Trust Tales</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <title>TrustTales</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
 
-    <!-- AUTH: SIGNUP -->
-    <section id="signupPage" class="card">
-      <h1>📝 Create Account</h1>
-      <form id="signupForm" class="form">
-        <input type="text" id="signupUser" placeholder="Username" required />
-        <input type="password" id="signupPass" placeholder="Password" required />
-        <button type="submit">Sign Up</button>
-      </form>
-      <p class="muted">Already have an account? <a href="#" id="goLogin">Login</a></p>
-    </section>
+  <header>
+    <h1>TrustTales</h1>
+    <button onclick="openLogin()">Login</button>
+    <button onclick="openSettings()">Settings</button>
+  </header>
 
-    <!-- AUTH: LOGIN -->
-    <section id="loginPage" class="card hidden">
-      <h1>🔐 Login</h1>
-      <form id="loginForm" class="form">
-        <input type="text" id="loginUser" placeholder="Username" required />
-        <input type="password" id="loginPass" placeholder="Password" required />
+  <!-- Intro Page -->
+  <div class="intro-page" id="introPage">
+    <h2>Welcome to TrustTales</h2>
+    <p>Your trusted place for stories and books.</p>
+    <button onclick="showGenres()">Explore Genres</button>
+  </div>
+
+  <!-- Genres Section -->
+  <div id="genresPage" style="display:none;">
+    <button class="back-btn" onclick="backToIntro()">⬅ Back</button>
+    <h2 style="text-align:center;">Genres</h2>
+    <div class="grid-container">
+      
+      </div>
+    </div>
+  </div>
+
+  <!-- Books Section -->
+  <div id="booksPage" style="display:none;">
+    <button class="back-btn" onclick="backToGenres()">⬅ Back</button>
+    <h2 style="text-align:center;" id="genreTitle">Books</h2>
+    <div class="grid-container" id="booksContainer"></div>
+  </div>
+
+  <!-- Settings (Read Later Books) -->
+  <div id="settingsPage" style="display:none;">
+    <button class="back-btn" onclick="backToIntro()">⬅ Back</button>
+    <button class="back-btn" onclick="backToGenres()">⬅ Back to Genres</button>
+    <h2 style="text-align:center;">Read Later List</h2>
+    <ul id="readLaterList" style="list-style:none; padding:0; text-align:center;"></ul>
+  </div>
+
+  <!-- Login Popup -->
+  <div class="popup" id="loginPopup">
+    <div class="popup-content">
+      <h3>Login</h3>
+      <form onsubmit="handleLogin(event)">
+        <input type="text" id="username" placeholder="Username" required><br>
+        <input type="password" id="password" placeholder="Password" required><br>
         <button type="submit">Login</button>
       </form>
-      <p class="muted">No account? <a href="#" id="goSignup">Sign up</a></p>
-    </section>
-
-    <!-- APP -->
-    <section id="appPage" class="card hidden">
-      <header class="app-header">
-        <h1>📚 Book Review Portal</h1>
-        <div class="userbar">
-          <span id="helloUser"></span>
-          <button id="logoutBtn" class="secondary">Logout</button>
-        </div>
-      </header>
-
-      <!-- Tabs -->
-      <nav class="tabs">
-        <button class="tab active" data-tab="profileTab">Profile</button>
-        <button class="tab" data-tab="booksTab">Books</button>
-      </nav>
-
-      <!-- PROFILE TAB -->
-      <section id="profileTab" class="tabpanel">
-        <div class="profile">
-          <div>
-            <h2>👤 <span id="profileUser"></span></h2>
-            <p><strong>Total Reviews (unique books):</strong> <span id="reviewCount">0</span></p>
-            <p><strong>Badge:</strong> <span id="userBadge" class="badge">None</span></p>
-          </div>
-          <div class="badges-help">
-            <p class="muted">Badges unlock by unique books reviewed:</p>
-            <div class="badge bronze">Bronze (10)</div>
-            <div class="badge silver">Silver (20)</div>
-            <div class="badge gold">Gold (30)</div>
-            <div class="badge platinum">Platinum (50)</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- BOOKS TAB -->
-      <section id="booksTab" class="tabpanel hidden">
-        <div class="toolbar">
-          <label>Filter by Genre:
-            <select id="genreFilter">
-              <option value="">All</option>
-              <option>Fiction</option>
-              <option>Non-Fiction</option>
-              <option>Science</option>
-              <option>History</option>
-              <option>Fantasy</option>
-            </select>
-          </label>
-        </div>
-        <div id="bookList"></div>
-        <!-- ADD BOOK PAGE -->
-    <h2>Add a New Book</h2>
-<form id="addBookForm">
-  <input type="text" id="newBookTitle" placeholder="Book Title" required>
-  <select id="newBookGenre" required>
-    <option value="">Select Genre</option>
-    <option>Fiction</option>
-    <option>Non-Fiction</option>
-    <option>Science</option>
-    <option>History</option>
-    <option>Fantasy</option>
-  </select>
-  <button type="submit">➕ Add Book</button>
-</form>
-      </section>
-          
-
-    </section>
-
-    <!-- BOOK DETAIL PAGE -->
-    <section id="bookPage" class="card hidden">
-      <button id="backToBooks" class="secondary">⬅ Back</button>
-      <h2 id="bookTitleHeader"></h2>
-      <h3 id="bookGenreHeader" class="muted"></h3>
-
-      <h3>Reviews</h3>
-      <div id="reviewsList"></div>
-
-      <h3>Add Your Review</h3>
-      <form id="reviewForm" class="form compact">
-        <label>
-          Rating:
-          <select id="reviewStars" required>
-            <option value="">Choose</option>
-            <option value="1">⭐</option>
-            <option value="2">⭐⭐</option>
-            <option value="3">⭐⭐⭐</option>
-            <option value="4">⭐⭐⭐⭐</option>
-            <option value="5">⭐⭐⭐⭐⭐</option>
-          </select>
-        </label>
-        <textarea id="reviewText" placeholder="Write your review..." required></textarea>
-        <button type="submit">Submit Review</button>
-      </form>
-    </section>
+      <button onclick="closeLogin()">Close</button>
+    </div>
   </div>
-  
+
+  <footer>
+    <p>&copy; 2025 TrustTales. All Rights Reserved.</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
