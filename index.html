@@ -2,65 +2,84 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>TrustTales</title>
+  <title>Trust Tales</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <header>
-    <h1>TrustTales</h1>
-    <button onclick="openLogin()">Login</button>
-    <button onclick="openSettings()">Settings</button>
-  </header>
-
-  <!-- Intro Page -->
-  <div class="intro-page" id="introPage">
-    <h2>Welcome to TrustTales</h2>
-    <p>Your trusted place for stories and books.</p>
-    <button onclick="showGenres()">Explore Genres</button>
-  </div>
-
-  <!-- Genres Section -->
-  <div id="genresPage" style="display:none;">
-    <button class="back-btn" onclick="backToIntro()">⬅ Back</button>
-    <h2 style="text-align:center;">Genres</h2>
-    <div class="grid-container">
-      
-      </div>
+  <!-- Login / Signup Page -->
+  <section id="loginPage">
+    <div class="login-box">
+      <h1>Trust Tales</h1>
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+      <p>Don’t have an account? <a href="#" onclick="toggleSignup()">Sign up</a></p>
     </div>
-  </div>
+  </section>
 
-  <!-- Books Section -->
-  <div id="booksPage" style="display:none;">
-    <button class="back-btn" onclick="backToGenres()">⬅ Back</button>
-    <h2 style="text-align:center;" id="genreTitle">Books</h2>
-    <div class="grid-container" id="booksContainer"></div>
-  </div>
+  <!-- Home Page -->
+  <section id="mainPage" class="hidden">
+    <header>
+      <h2>Welcome, <span id="profileName"></span> <span class="badge">📖</span></h2>
+      <nav>
+        <button onclick="showHome()">Home</button>
+        <button onclick="showGenres()">Browse Genres</button>
+        <button onclick="showSaved()">Saved</button>
+        <button onclick="showAddBook()">Add Book</button>
+        <button onclick="showSettings()">Settings</button>
+        <button onclick="logout()">Logout</button>
+      </nav>
+    </header>
 
-  <!-- Settings (Read Later Books) -->
-  <div id="settingsPage" style="display:none;">
-    <button class="back-btn" onclick="backToIntro()">⬅ Back</button>
-    <button class="back-btn" onclick="backToGenres()">⬅ Back to Genres</button>
-    <h2 style="text-align:center;">Read Later List</h2>
-    <ul id="readLaterList" style="list-style:none; padding:0; text-align:center;"></ul>
-  </div>
+    <!-- Home -->
+    <section id="homeSection">
+      <h3>Discover Your Next Favorite Story</h3>
+      <p>Trust Tales brings books, series, and reviews together in one cozy place. 🌸  
+      Browse genres, read online, watch adaptations, and share your thoughts!</p>
+      <button onclick="showGenres()" class="browse-btn">Browse Genres</button>
+    </section>
 
-  <!-- Login Popup -->
-  <div class="popup" id="loginPopup">
-    <div class="popup-content">
-      <h3>Login</h3>
-      <form onsubmit="handleLogin(event)">
-        <input type="text" id="username" placeholder="Username" required><br>
-        <input type="password" id="password" placeholder="Password" required><br>
-        <button type="submit">Login</button>
-      </form>
-      <button onclick="closeLogin()">Close</button>
-    </div>
-  </div>
+    <!-- Genres -->
+    <section id="genresSection" class="hidden">
+      <h3>Select a Genre</h3>
+      <div class="genres"></div>
+    </section>
 
-  <footer>
-    <p>&copy; 2025 TrustTales. All Rights Reserved.</p>
-  </footer>
+    <!-- Books -->
+    <section id="booksSection" class="hidden">
+      <h3 id="genreTitle"></h3>
+      <div class="books"></div>
+      <button onclick="showGenres()" class="back-btn">⬅ Back to Genres</button>
+    </section>
+
+    <!-- Saved -->
+    <section id="savedSection" class="hidden">
+      <h3>Saved for Later</h3>
+      <div class="saved"></div>
+      <button onclick="showHome()" class="back-btn">⬅ Back</button>
+    </section>
+
+    <!-- Add Book -->
+    <section id="addBookSection" class="hidden">
+      <h3>Add a Book</h3>
+      <input id="bookTitle" placeholder="Title"><br>
+      <input id="bookAuthor" placeholder="Author"><br>
+      <input id="bookDesc" placeholder="Description"><br>
+      <input id="bookRead" placeholder="Read URL"><br>
+      <input id="bookWatch" placeholder="Watch URL"><br>
+      <input id="bookBuy" placeholder="Buy URL"><br>
+      <input type="file" id="bookPoster" onchange="previewPoster(event)"><br>
+      <img id="posterPreview" width="120"><br>
+      <button onclick="addBook()">Add</button>
+    </section>
+
+    <!-- Settings -->
+    <section id="settingsSection" class="hidden">
+      <h3>Profile Settings</h3>
+      <p>Edit your profile details (dummy for now).</p>
+      <button onclick="showHome()" class="back-btn">⬅ Back</button>
+    </section>
+  </section>
 
   <script src="script.js"></script>
 </body>
