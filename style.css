@@ -1,0 +1,97 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #ffe4ec;
+  color: #333;
+  text-align: center;
+}
+
+.hidden { display: none; }
+
+header {
+  background: #ff99c8;
+  padding: 15px;
+  color: white;
+}
+
+nav button {
+  margin: 5px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 20px;
+  background: #ffb3d9;
+  color: white;
+  cursor: pointer;
+}
+nav button:hover { background: #ff80bf; }
+
+.login-box {
+  margin: 10% auto;
+  background: #fff0f6;
+  padding: 30px;
+  width: 300px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(255, 128, 191, 0.5);
+}
+.login-box input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 90%;
+  border: 1px solid #ffb3d9;
+  border-radius: 10px;
+}
+.login-box button {
+  background: #ff80bf;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+}
+.login-box button:hover { background: #ff3399; }
+
+.badge {
+  background: #fff;
+  color: #ff3399;
+  padding: 3px 6px;
+  border-radius: 50%;
+}
+
+.books, .genres, .saved {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  width: 200px;
+  box-shadow: 0 0 10px rgba(255, 128, 191, 0.3);
+}
+.card img {
+  width: 100%;
+  border-radius: 10px;
+}
+.card button {
+  margin: 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 10px;
+  background: #ffb3d9;
+  cursor: pointer;
+}
+.card button:hover { background: #ff80bf; }
+
+.browse-btn, .back-btn {
+  margin-top: 15px;
+  background: #ff3399;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
