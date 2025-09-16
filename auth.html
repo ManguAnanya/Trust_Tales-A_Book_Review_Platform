@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrustTales - Login</title>
+  <link rel="stylesheet" href="style.css"> <!-- reuse your global CSS -->
+  <style>
+    body {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .auth-container {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      padding: 2rem;
+      border-radius: var(--rounded);
+      box-shadow: var(--shadow);
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .auth-container h2 {
+      margin-bottom: 0.6rem;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .auth-container p {
+      margin-bottom: 1.5rem;
+      color: #444;
+    }
+
+    .auth-container h3 {
+      margin-top: 1rem;
+      margin-bottom: 0.8rem;
+      color: var(--accent);
+    }
+
+    .auth-container input {
+      width: 100%;
+      padding: 0.9rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ddd;
+      border-radius: var(--rounded);
+      outline: none;
+      transition: border 0.3s;
+    }
+
+    .auth-container input:focus {
+      border: 1px solid var(--primary);
+      box-shadow: 0 0 6px rgba(249, 115, 22, 0.3);
+    }
+
+    .auth-container button {
+      width: 100%;
+      padding: 0.9rem;
+      margin-top: 0.8rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      border: none;
+      border-radius: var(--rounded);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .auth-container button:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+    }
+
+    #message {
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <h2>TrustTales</h2>
+    <p>Join our community and explore books worldwide!</p>
+
+    <!-- Register Section -->
+    <div id="register-section">
+      <h3>Create Account</h3>
+      <input type="text" id="reg-username" placeholder="Choose a username">
+      <input type="password" id="reg-password" placeholder="Choose a password">
+      <button onclick="register()">Register</button>
+    </div>
+
+    <!-- Login Section -->
+    <div id="login-section">
+      <h3>Already a member?</h3>
+      <input type="text" id="login-username" placeholder="Enter username">
+      <input type="password" id="login-password" placeholder="Enter password">
+      <button onclick="login()">Login</button>
+    </div>
+
+    <p id="message"></p>
+  </div>
+
+  <script>
+    function register() {
+      const username = document.getElementById("reg-username").value.trim();
+      const password = document.getElementById("reg-password").value.trim();
+
+      if (!username || !password) {
+        setMessage("⚠ Please enter username and password.", "red");
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem("users")) || {};
+      if (users[username]) {
+        setMessage("⚠ Username already exists.", "red");
+        return;
+      }
+
+      users[username] = { password, verified: false };
+      localStorage.setItem("users", JSON.stringify(users));
+
+      setMessage("✅ Registration successful! Please login.", "green");
+    }
+
+    function login() {
+      const username = document.getElementById("login-username").value.trim();
+      const password = document.getElementById("login-password").value.trim();
+
+      let users = JSON.parse(localStorage.getItem("users")) || {};
+      if (users[username] && users[username].password === password) {
+        localStorage.setItem("currentUser", username);
+        window.location.href = "index.html"; // Redirect to homepage
+      } else {
+        setMessage("❌ Invalid credentials.", "red");
+      }
+    }
+
+    function setMessage(msg, color) {
+      const el = document.getElementById("message");
+      el.innerText = msg;
+      el.style.color = color;
+    }
+  </script>
+</body>
+</html>

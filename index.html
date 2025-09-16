@@ -1,86 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Trust Tales</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Trust Tales — Discover & Share</title>
+
+  <!-- Google Fonts + Feather icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <!-- Login / Signup Page -->
-  <section id="loginPage">
-    <div class="login-box">
-      <h1>Trust Tales</h1>
-      <input type="text" id="username" placeholder="Username">
-      <input type="password" id="password" placeholder="Password">
-      <button onclick="login()">Login</button>
-      <p>Don’t have an account? <a href="#" onclick="toggleSignup()">Sign up</a></p>
+<body onload="initializeApp()">
+
+  <header class="site-header">
+    <div class="brand">
+      <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=200&auto=format&fit=crop&crop=faces" alt="logo" class="logo" />
+      <div>
+        <h1>Trust Tales</h1>
+        <small>Stories, adaptations & community</small>
+      </div>
     </div>
-  </section>
 
-  <!-- Home Page -->
-  <section id="mainPage" class="hidden">
-    <header>
-      <h2>Welcome, <span id="profileName"></span> <span class="badge">📖</span></h2>
-      <nav>
-        <button onclick="showHome()">Home</button>
-        <button onclick="showGenres()">Browse Genres</button>
-        <button onclick="showSaved()">Saved</button>
-        <button onclick="showAddBook()">Add Book</button>
-        <button onclick="showSettings()">Settings</button>
-        <button onclick="logout()">Logout</button>
+    <div class="header-actions">
+      <div class="profile" title="Profile">
+        <img id="headerAvatar" src="" alt="avatar" class="avatar small" />
+        <div class="profile-name"> <span id="profileName">Guest</span> <span id="verifiedBadge" class="badge hidden">✔</span></div>
+      </div>
+      <nav class="top-nav">
+        <button onclick="showHome()" title="Home">🏠 Home</button>
+        <button onclick="showGenres()" title="Browse genres">📚 Genres</button>
+        <button onclick="showSaved()" title="Saved">💾 Saved</button>
+        <button onclick="showAddBook()" title="Add">➕ Add</button>
+        <button onclick="showSettings()" title="Settings">⚙️ Settings</button>
+        <button onclick="logout()" title="Logout" class="logout-btn">🚪 Logout</button>
       </nav>
-    </header>
+    </div>
+  </header>
 
-    <!-- Home -->
-    <section id="homeSection">
-      <h3>Discover Your Next Favorite Story</h3>
-      <p>Trust Tales brings books, series, and reviews together in one cozy place. 🌸  
-      Browse genres, read online, watch adaptations, and share your thoughts!</p>
-      <button onclick="showGenres()" class="browse-btn">Browse Genres</button>
+  <main id="mainPage">
+    <!-- HOME -->
+    <section id="homeSection" class="content-section">
+      <div class="hero">
+        <div class="hero-overlay"></div>
+        <img class="hero-img" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1600&auto=format&fit=crop" alt="reading-hero" />
+        <div class="hero-text">
+          <h2>Discover Your Next Favorite Story</h2>
+          <p>Trust Tales brings books, series and reviews together in one cozy place. Browse genres, read online, watch adaptations, and share your thoughts with the community.</p>
+          <div class="hero-ctas">
+            <button class="primary" onclick="showGenres()">Browse Genres</button>
+            <button class="ghost" onclick="showSaved()">Your Saved</button>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Featured Books -->
+      <div class="featured">
+        <h3>📖 Featured Books</h3>
+        <div class="featured-row">
+          <div class="mini-card">
+            <img src="https://covers.openlibrary.org/b/id/8231856-L.jpg" alt="">
+            <p>Percy Jackson</p>
+          </div>
+          <div class="mini-card">
+            <img src="https://covers.openlibrary.org/b/id/6979861-L.jpg" alt="">
+            <p>The Hobbit</p>
+          </div>
+          <div class="mini-card">
+            <img src="https://m.media-amazon.com/images/I/81ZtAPCqyGL.UF1000,1000_QL80.jpg" alt="">
+            <p>The Alchemist</p>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Reader Quote -->
+      <div class="quote-block">
+        <p>“Reading gives us someplace to go when we have to stay where we are.”</p>
+        <span>— Mason Cooley</span>
+      </div>
     </section>
 
-    <!-- Genres -->
-    <section id="genresSection" class="hidden">
-      <h3>Select a Genre</h3>
+    <!-- GENRES -->
+    <section id="genresSection" class="content-section hidden">
+      <div class="section-header">
+        <h2>Genres</h2>
+        <p>Choose a genre to explore curated picks</p>
+      </div>
       <div class="genres"></div>
     </section>
 
-    <!-- Books -->
-    <section id="booksSection" class="hidden">
-      <h3 id="genreTitle"></h3>
+    <!-- BOOKS -->
+    <section id="booksSection" class="content-section hidden">
+      <div class="section-header">
+        <h2 id="genreTitle"></h2>
+        <button class="back-btn" onclick="showGenres()">⬅ Back</button>
+      </div>
       <div class="books"></div>
-      <button onclick="showGenres()" class="back-btn">⬅ Back to Genres</button>
     </section>
 
-    <!-- Saved -->
-    <section id="savedSection" class="hidden">
-      <h3>Saved for Later</h3>
+    <!-- SAVED -->
+    <section id="savedSection" class="content-section hidden">
+      <div class="section-header">
+        <h2>Saved for Later</h2>
+        <p>Your saved books and quick actions.</p>
+      </div>
       <div class="saved"></div>
-      <button onclick="showHome()" class="back-btn">⬅ Back</button>
+      <div style="text-align:right; margin-top:10px;">
+        <button onclick="showHome()" class="back-btn">⬅ Back</button>
+      </div>
     </section>
 
-    <!-- Add Book -->
-    <section id="addBookSection" class="hidden">
-      <h3>Add a Book</h3>
-      <input id="bookTitle" placeholder="Title"><br>
-      <input id="bookAuthor" placeholder="Author"><br>
-      <input id="bookDesc" placeholder="Description"><br>
-      <input id="bookRead" placeholder="Read URL"><br>
-      <input id="bookWatch" placeholder="Watch URL"><br>
-      <input id="bookBuy" placeholder="Buy URL"><br>
-      <input type="file" id="bookPoster" onchange="previewPoster(event)"><br>
-      <img id="posterPreview" width="120"><br>
-      <button onclick="addBook()">Add</button>
+    <!-- ADD BOOK -->
+    <section id="addBookSection" class="content-section hidden">
+      <div class="section-header">
+        <h2>Add a Book</h2>
+        <p>Share a book with the community (poster optional).</p>
+      </div>
+
+      <div class="form-container">
+        <input id="bookTitle" placeholder="Title" />
+        <input id="bookAuthor" placeholder="Author" />
+        <textarea id="bookDesc" placeholder="Short description" rows="3"></textarea>
+        <input id="bookRead" placeholder="Read URL (optional)" />
+        <input id="bookWatch" placeholder="Watch URL (optional)" />
+        <input id="bookBuy" placeholder="Buy URL (optional)" />
+        <div class="file-input-wrapper">
+          <input type="file" id="bookPoster" accept="image/*" onchange="previewPoster(event)">
+          <label for="bookPoster">Upload Poster</label>
+        </div>
+        <img id="posterPreview" class="poster-preview" src="" alt="poster preview" />
+        <div class="form-actions">
+          <button onclick="addBook()" class="primary">Add Book</button>
+          <button onclick="showHome()" class="ghost">Cancel</button>
+        </div>
+      </div>
     </section>
 
-    <!-- Settings -->
-    <section id="settingsSection" class="hidden">
-      <h3>Profile Settings</h3>
-      <p>Edit your profile details (dummy for now).</p>
-      <button onclick="showHome()" class="back-btn">⬅ Back</button>
-    </section>
-  </section>
+    <!-- SETTINGS -->
+    <section id="settingsSection" class="content-section hidden">
+      <div class="section-header">
+        <h2>Profile Settings</h2>
+        <p>Update display name and avatar (local only).</p>
+      </div>
 
-  <script src="script.js"></script>
+      <div class="settings-grid">
+        <div class="profile-card">
+          <img id="avatarPreview" src="" alt="avatar" class="avatar large" />
+          <div>
+            <label class="file-label">
+              <input type="file" id="avatarInput" accept="image/*" onchange="previewAvatar(event)">
+              Change avatar
+            </label>
+            <p id="currentUserInfo"></p>
+          </div>
+        </div>
+
+        <div class="profile-edit">
+          <input id="displayName" placeholder="Display name" />
+          <label>
+            Verified (toggle stored locally)
+            <select id="verifiedToggle">
+              <option value="false">No</option>
+              <option value="true">Yes</option>
+            </select>
+          </label>
+
+          <div class="form-actions">
+            <button onclick="saveProfile()" class="primary">Save Profile</button>
+            <button onclick="showHome()" class="ghost">Back</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>Built with ❤️ — Trust Tales • Not for commercial use</small>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>feather.replace()</script>
 </body>
 </html>

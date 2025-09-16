@@ -1,54 +1,73 @@
-// Genres & Books
+// --- Data Models & Local Storage sync ---
+const users = JSON.parse(localStorage.getItem("users")) || {
+  user1: { password: "password1", verified: false },
+  verifiedUser: { password: "password2", verified: true }
+};
+
 const genres = {
   Fantasy: [
-    {title: "Harry Potter", author: "J.K. Rowling", desc: "Wizarding world adventure.", poster: "https://covers.openlibrary.org/b/id/7984916-L.jpg", read: "https://openlibrary.org", watch: "https://primevideo.com", buy: "https://amazon.in"},
-    {title: "Percy Jackson", author: "Rick Riordan", desc: "Greek mythology modern twist.", poster: "https://covers.openlibrary.org/b/id/8231856-L.jpg", read: "https://openlibrary.org", watch: "https://disneyplus.com", buy: "https://amazon.in"},
-    {title: "The Hobbit", author: "J.R.R. Tolkien", desc: "A hobbit’s epic adventure.", poster: "https://covers.openlibrary.org/b/id/6979861-L.jpg", read: "https://openlibrary.org", watch: "https://primevideo.com", buy: "https://amazon.in"},
+    { title: "Harry Potter", author: "J.K. Rowling", desc: "Wizarding world adventure.", poster: "https://covers.openlibrary.org/b/id/7984916-L.jpg", read: "https://openlibrary.org", watch: "https://primevideo.com", buy: "https://amazon.in" },
+    { title: "Percy Jackson", author: "Rick Riordan", desc: "Greek mythology modern twist.", poster: "https://covers.openlibrary.org/b/id/8231856-L.jpg", read: "https://openlibrary.org", watch: "https://disneyplus.com", buy: "https://disneyplus.com" },
+    { title: "The Hobbit", author: "J.R.R. Tolkien", desc: "A hobbit’s epic adventure.", poster: "https://covers.openlibrary.org/b/id/6979861-L.jpg", read: "https://openlibrary.org", watch: "https://primevideo.com", buy: "https://amazon.in" }
   ],
   Romance: [
-    {title: "The Summer I Turned Pretty", author: "Jenny Han", desc: "A teen summer romance.", poster: "https://i.pinimg.com/736x/8a/29/ca/8a29cadab2d4329ac929388160296408.jpg", read: "https://archive.org/details/the-summer-i-turned-pretty-all-book/mode/2up", watch: "https://www.primevideo.com/region/eu/detail/0KAW4T6OOSAPQJVCFDCOXNLGJU/ref=atv_dp_share_cu_r", buy: "https://amzn.in/d/inZ4FEI"},
-    {title: "Pride and Prejudice", author: "Jane Austen", desc: "Classic love & society tale.", poster: "https://i.pinimg.com/736x/47/b5/47/47b547ad30201ad69099c2cb6faff682.jpg", read: "https://publicdomainlibrary.org/en/ebooks/pride-prejudice?gad_source=1&gad_campaignid=22461318658&gbraid=0AAAAA_TPsDgpP9Jxr4e1abU2phNd09gKG&gclid=Cj0KCQjw8KrFBhDUARIsAMvIApZva8DMqBq3ud7-HPbX_OrWGYiu53HQifP8TFqPx_UYwSWaNMU_058aAkWXEALw_wcB#formats", watch: "https://www.primevideo.com/region/eu/detail/0J7Y9UVDPJYTG6TM5CJB3KQAA7/ref=atv_dp_share_cu_r", buy: "https://amzn.in/d/aVLSteE"},
-    {title: "Me Before You", author: "Jojo Moyes", desc: "Heartbreaking modern romance.", poster: "https://i.pinimg.com/736x/eb/b7/5c/ebb75c0537592386b579e672ac0b545f.jpg", read: "https://icrrd.com/public/media/14-05-2021-091024Me-Before-You.pdf", watch: "https://www.primevideo.com/region/eu/detail/0KEL156SFVHYA27IZCVBP04Q7J/ref=atv_dp_share_cu_r", buy: "https://amzn.in/d/cVffzpI"},
+    { title: "The Summer I Turned Pretty", author: "Jenny Han", desc: "A teen summer romance.", poster: "https://i.pinimg.com/736x/8a/29/ca/8a29cadab2d4329ac929388160296408.jpg", read: "https://archive.org", watch: "https://primevideo.com", buy: "https://amzn.in" },
+    { title: "Pride and Prejudice", author: "Jane Austen", desc: "Classic love & society tale.", poster: "https://i.pinimg.com/736x/47/b5/47/47b547ad30201ad69099c2cb6faff682.jpg", read: "https://publicdomainlibrary.org", watch: "https://primevideo.com", buy: "https://amzn.in" },
+    { title: "Me Before You", author: "Jojo Moyes", desc: "Heartbreaking modern romance.", poster: "https://i.pinimg.com/736x/eb/b7/5c/ebb75c0537592386b579e672ac0b545f.jpg", read: "", watch: "https://primevideo.com", buy: "https://amzn.in" }
   ],
   Horror: [
-    {title: "Ghosts of The Silent Hills: Stories based on true hauntings", author: "Anita Krishan", desc: "Ghosts of the Silent Hills: spine-chilling true tales from haunted hills and forests.", poster:"https://m.media-amazon.com/images/I/91g4YHEkGkL._SL1500_.jpg" ,read: "https://fliphtml5.com/okrlz/vvlf/basic",buy: "https://amzn.in/d/04lYvxK" },
+    { title: "Ghosts of The Silent Hills", author: "Anita Krishan", desc: "True hauntings and eerie tales.", poster: "https://m.media-amazon.com/images/I/91g4YHEkGkL.SL1500.jpg", read: "https://fliphtml5.com", buy: "https://amzn.in" }
   ],
   Education: [
-    {title: "The Alchemist", author: "Paulo Coelho", desc: "Shepherd finds his treasure at home after a long, wise Egyptian quest", poster:"https://m.media-amazon.com/images/I/81ZtAPCqyGL._UF1000,1000_QL80_.jpg", read: "https://icrrd.com/public/media/15-05-2021-084550The-Alchemist-Paulo-Coelho.pdf", buy:"https://amzn.in/d/eq3r0NV"},
+    { title: "The Alchemist", author: "Paulo Coelho", desc: "A shepherd's journey to wisdom.", poster: "https://m.media-amazon.com/images/I/81ZtAPCqyGL.UF1000,1000_QL80.jpg", read: "https://icrrd.com", buy: "https://amzn.in" }
   ]
 };
 
-let savedBooks = JSON.parse(localStorage.getItem("savedBooks")) || [];
+let savedBooks = JSON.parse(localStorage.getItem("savedBooks")) || []; // stored as {title,poster}
 let reviews = JSON.parse(localStorage.getItem("reviews")) || {};
-let currentUser = "";
+let currentUser = localStorage.getItem("currentUser") || "";
+let profileAvatars = JSON.parse(localStorage.getItem("profileAvatars")) || {}; // username => dataURL
+let userDisplayNames = JSON.parse(localStorage.getItem("userDisplayNames")) || {}; // username => displayName
 
-// Login
-function login() {
-  const user = document.getElementById("username").value;
-  const pass = document.getElementById("password").value;
-  if (!user || !pass) return alert("Enter username & password");
+// Initialize
+function initializeApp() {
+  currentUser = localStorage.getItem("currentUser");
+  if (!currentUser) {
+    window.location.href = "auth.html"; // go to login/signup page
+    return;
+  }
 
-  currentUser = user;
-  localStorage.setItem("currentUser", user);
+  document.getElementById("profileName").textContent = userDisplayNames[currentUser] || currentUser;
+  document.getElementById("currentUserInfo").textContent = `Logged in as: ${currentUser}`;
+  const verifiedBadge = document.getElementById("verifiedBadge");
+  if (users[currentUser] && users[currentUser].verified) {
+    verifiedBadge.classList.remove("hidden");
+  } else verifiedBadge.classList.add("hidden");
 
-  document.getElementById("loginPage").classList.add("hidden");
-  document.getElementById("mainPage").classList.remove("hidden");
-  document.getElementById("profileName").textContent = user;
+  // set avatar if exists
+  const avatarUrl = profileAvatars[currentUser] || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop";
+  document.getElementById("headerAvatar").src = avatarUrl;
+  document.getElementById("avatarPreview").src = avatarUrl;
+
   showHome();
 }
 
-function logout() {
-  document.getElementById("loginPage").classList.remove("hidden");
-  document.getElementById("mainPage").classList.add("hidden");
+// --- SECTION CONTROLS ---
+function hideAllSections() {
+  document.querySelectorAll("main#mainPage > section").forEach(s => s.classList.add("hidden"));
 }
 
-// Show sections
-function showHome() { hideAll(); document.getElementById("homeSection").classList.remove("hidden"); }
+function showHome() {
+  hideAllSections();
+  document.getElementById("homeSection").classList.remove("hidden");
+}
+
 function showGenres() {
-  hideAll();
+  hideAllSections();
   document.getElementById("genresSection").classList.remove("hidden");
   const container = document.querySelector(".genres");
   container.innerHTML = "";
+
   for (let g in genres) {
     const btn = document.createElement("button");
     btn.textContent = g;
@@ -56,12 +75,14 @@ function showGenres() {
     container.appendChild(btn);
   }
 }
+
 function showBooks(genre) {
-  hideAll();
+  hideAllSections();
   document.getElementById("booksSection").classList.remove("hidden");
   document.getElementById("genreTitle").textContent = genre;
   const container = document.querySelector(".books");
   container.innerHTML = "";
+
   genres[genre].forEach(book => {
     const card = document.createElement("div");
     card.className = "card";
@@ -70,60 +91,189 @@ function showBooks(genre) {
       <h4>${book.title}</h4>
       <p><em>${book.author}</em></p>
       <p>${book.desc}</p>
-      <button onclick="window.open('${book.read}')">Read</button>
-      <button onclick="window.open('${book.watch}')">Watch</button>
-      <button onclick="window.open('${book.buy}')">Buy</button>
-      <button onclick="saveBook('${book.title}')">Save</button>
-      <button onclick="writeReview('${book.title}')">✍ Review</button>
-      <button onclick="readReviews('${book.title}')">📖 Reviews</button>
+      <div class="card-actions">
+        ${book.read ? `<button onclick="window.open('${book.read}')" title="Read">📖 Read</button>` : ''}
+        ${book.watch ? `<button onclick="window.open('${book.watch}')" title="Watch">▶ Watch</button>` : ''}
+        ${book.buy ? `<button onclick="window.open('${book.buy}')" title="Buy">🛒 Buy</button>` : ''}
+        <button onclick="saveBook('${escapeHtml(book.title)}','${escapeHtml(book.poster)}')" title="Save">📌 Save</button>
+      </div>
+      <div class="card-actions">
+        <button onclick="writeReview('${escapeHtml(book.title)}')">✍️ Review</button>
+        <button onclick="readReviews('${escapeHtml(book.title)}')">📖 Reviews</button>
+      </div>
     `;
     container.appendChild(card);
   });
 }
 
 function showSaved() {
-  hideAll();
+  hideAllSections();
   document.getElementById("savedSection").classList.remove("hidden");
   const container = document.querySelector(".saved");
-  container.innerHTML = savedBooks.map(b => `<p>📌 ${b}</p>`).join("");
-}
-function showAddBook() { hideAll(); document.getElementById("addBookSection").classList.remove("hidden"); }
-function showSettings() { hideAll(); document.getElementById("settingsSection").classList.remove("hidden"); }
-function hideAll() { document.querySelectorAll("section").forEach(sec => sec.classList.add("hidden")); document.getElementById("mainPage").classList.remove("hidden"); }
+  container.innerHTML = "";
 
-// Add Book
+  if (!savedBooks.length) {
+    container.innerHTML = "<p>You haven't saved any books yet — find a gem in Genres.</p>"
+    return;
+  }
+
+  savedBooks.forEach(item => {
+    const el = document.createElement("p");
+    el.innerHTML = `<img class="thumb" src="${item.poster}" alt="${item.title}"> <strong>${item.title}</strong> &nbsp; <button onclick="openBookFromSaved('${escapeHtml(item.title)}')" class="ghost">Open</button> <button onclick="removeSaved('${escapeHtml(item.title)}')" class="ghost">Remove</button>`;
+    container.appendChild(el);
+  });
+}
+
+function openBookFromSaved(title) {
+  // find in genres and open genre view for that book (best-effort)
+  for (let g in genres) {
+    const match = genres[g].find(b => b.title === title);
+    if (match) {
+      showBooks(g);
+      return;
+    }
+  }
+  alert("Book not found in collection (it may be a custom add).");
+}
+
+function removeSaved(title) {
+  savedBooks = savedBooks.filter(b => b.title !== title);
+  localStorage.setItem("savedBooks", JSON.stringify(savedBooks));
+  showSaved();
+}
+
+function showAddBook() {
+  hideAllSections();
+  document.getElementById("addBookSection").classList.remove("hidden");
+}
+
+function showSettings() {
+  hideAllSections();
+  document.getElementById("settingsSection").classList.remove("hidden");
+
+  // populate settings inputs
+  document.getElementById("displayName").value = userDisplayNames[currentUser] || "";
+  document.getElementById("verifiedToggle").value = users[currentUser] && users[currentUser].verified ? "true" : "false";
+}
+
+// --- Auth & misc ---
+function logout() {
+  localStorage.removeItem("currentUser");
+  window.location.href = "auth.html";
+}
+
+
+// --- Add Book ---
 function addBook() {
-  const title = document.getElementById("bookTitle").value;
-  const author = document.getElementById("bookAuthor").value;
-  const desc = document.getElementById("bookDesc").value;
-  const read = document.getElementById("bookRead").value;
-  const watch = document.getElementById("bookWatch").value;
-  const buy = document.getElementById("bookBuy").value;
+  const title = document.getElementById("bookTitle").value.trim();
+  const author = document.getElementById("bookAuthor").value.trim();
+  const desc = document.getElementById("bookDesc").value.trim();
+  const read = document.getElementById("bookRead").value.trim();
+  const watch = document.getElementById("bookWatch").value.trim();
+  const buy = document.getElementById("bookBuy").value.trim();
   const posterFile = document.getElementById("bookPoster").files[0];
-  let posterURL = "https://via.placeholder.com/200x300?text=Book";
-  if (posterFile) posterURL = URL.createObjectURL(posterFile);
-  genres["Fantasy"].push({title, author, desc, read, watch, buy, poster: posterURL});
-  alert("Book added!");
+
+  if (!title || !author) return alert("Please provide at least a title and an author.");
+
+  if (posterFile) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const posterURL = e.target.result;
+      pushNewBook(title, author, desc, read, watch, buy, posterURL);
+    };
+    reader.readAsDataURL(posterFile);
+  } else {
+    const posterURL = "https://via.placeholder.com/240x320?text=Book+Poster";
+    pushNewBook(title, author, desc, read, watch, buy, posterURL);
+  }
+}
+
+function pushNewBook(title, author, desc, read, watch, buy, poster) {
+  // put new book into Fantasy by default
+  genres.Fantasy.push({ title, author, desc, read, watch, buy, poster });
+  alert("Book added successfully!");
+  // clear form
+  ["bookTitle","bookAuthor","bookDesc","bookRead","bookWatch","bookBuy"].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ""; });
+  document.getElementById("posterPreview").src = "";
   showGenres();
 }
-function previewPoster(e) { document.getElementById("posterPreview").src = URL.createObjectURL(e.target.files[0]); }
 
-// Save
-function saveBook(title) {
-  if (!savedBooks.includes(title)) savedBooks.push(title);
-  localStorage.setItem("savedBooks", JSON.stringify(savedBooks));
-  alert("Saved!");
+// --- Poster preview ---
+function previewPoster(e) {
+  const preview = document.getElementById("posterPreview");
+  if (e.target.files && e.target.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      preview.src = ev.target.result;
+      preview.style.display = "block";
+    }
+    reader.readAsDataURL(e.target.files[0]);
+  } else {
+    preview.src = "";
+    preview.style.display = "none";
+  }
 }
 
-// Reviews
+// --- Save & Reviews ---
+function saveBook(title, poster) {
+  // prevent duplicates
+  if (!savedBooks.some(b => b.title === title)) {
+    savedBooks.push({ title, poster });
+    localStorage.setItem("savedBooks", JSON.stringify(savedBooks));
+    alert("Book saved successfully!");
+  } else {
+    alert("This book is already in your saved list.");
+  }
+}
+
 function writeReview(title) {
-  const review = prompt(`Write a review for ${title}:`);
+  const review = prompt(`Write a review for "${title}":`);
   if (!review) return;
   if (!reviews[title]) reviews[title] = [];
   reviews[title].push(`${currentUser}: ${review}`);
   localStorage.setItem("reviews", JSON.stringify(reviews));
+  alert("Review submitted successfully!");
 }
+
 function readReviews(title) {
   const list = reviews[title] || [];
-  alert(list.length ? list.join("\n") : "No reviews yet.");
+  if (!list.length) {
+    alert("No reviews yet.");
+    return;
+  }
+  alert(`Reviews for "${title}":\n\n${list.join("\n\n")}`);
+}
+
+// --- Profile/avatar settings ---
+function previewAvatar(e) {
+  if (e.target.files && e.target.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      document.getElementById("avatarPreview").src = ev.target.result;
+      document.getElementById("headerAvatar").src = ev.target.result;
+      profileAvatars[currentUser] = ev.target.result;
+      localStorage.setItem("profileAvatars", JSON.stringify(profileAvatars));
+    }
+    reader.readAsDataURL(e.target.files[0]);
+  }
+}
+
+function saveProfile() {
+  const displayName = document.getElementById("displayName").value.trim();
+  const verified = document.getElementById("verifiedToggle").value === "true";
+  if (displayName) {
+    userDisplayNames[currentUser] = displayName;
+    localStorage.setItem("userDisplayNames", JSON.stringify(userDisplayNames));
+    document.getElementById("profileName").textContent = displayName;
+  }
+  users[currentUser] = users[currentUser] || { password: "" };
+  users[currentUser].verified = verified;
+  localStorage.setItem("users", JSON.stringify(users));
+  alert("Profile saved.");
+  document.getElementById("verifiedBadge").classList.toggle("hidden", !verified);
+}
+
+// small utility
+function escapeHtml(str){
+  return String(str).replace(/'/g,"\\'").replace(/"/g,'\\"');
 }
