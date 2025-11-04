@@ -15,7 +15,7 @@
 
   <header class="site-header">
     <div class="brand">
-      <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=200&auto=format&fit=crop&crop=faces" alt="logo" class="logo" />
+      <img src="top backgrpund.png" alt="logo" class="logo" />
       <div>
         <h1>Trust Tales</h1>
         <small>Stories, adaptations & community</small>
@@ -43,7 +43,7 @@
     <section id="homeSection" class="content-section">
       <div class="hero">
         <div class="hero-overlay"></div>
-        <img class="hero-img" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1600&auto=format&fit=crop" alt="reading-hero" />
+        <img class="hero-img" src="background.jpg" alt="reading-hero" />
         <div class="hero-text">
           <h2>Discover Your Next Favorite Story</h2>
           <p>Trust Tales brings books, series and reviews together in one cozy place. Browse genres, read online, watch adaptations, and share your thoughts with the community.</p>
@@ -59,8 +59,8 @@
         <h3>📖 Featured Books</h3>
         <div class="featured-row">
           <div class="mini-card">
-            <img src="https://covers.openlibrary.org/b/id/8231856-L.jpg" alt="">
-            <p>Percy Jackson</p>
+            <img src="https://covers.openlibrary.org/b/OLID/OL7822241M-L.jpg" alt="">
+            <p>The Catcher in the Rye</p>
           </div>
           <div class="mini-card">
             <img src="https://covers.openlibrary.org/b/id/6979861-L.jpg" alt="">
@@ -69,6 +69,14 @@
           <div class="mini-card">
             <img src="https://m.media-amazon.com/images/I/81ZtAPCqyGL.UF1000,1000_QL80.jpg" alt="">
             <p>The Alchemist</p>
+          </div>
+          <div class="mini-card">
+            <img src="tsitp.jpg" alt="">
+            <p>The Summer I Turned Pretty</p>
+          </div>
+          <div class="mini-card">
+            <img src="https://i.pinimg.com/736x/04/b4/c8/04b4c8c3a0bd38fcdb38f69b8fd85567.jpg" alt="">
+            <p>Harry Potter</p>
           </div>
         </div>
       </div>
@@ -82,11 +90,42 @@
 
     <!-- GENRES -->
     <section id="genresSection" class="content-section hidden">
-      <div class="section-header">
-        <h2>Genres</h2>
-        <p>Choose a genre to explore curated picks</p>
+      <h2>Genres</h2>
+      <p>Choose a genre to explore curated picks</p>
+      <div class="genres-grid">
+        <div class="genre-card" onclick="showBooks('Fantasy')">
+          <div class="genre-icon">🪄</div>
+          <h3>Fantasy</h3>
+        </div>
+        <div class="genre-card" onclick="showBooks('Romance')">
+          <div class="genre-icon">❤️</div>
+          <h3>Romance</h3>
+        </div>
+        <div class="genre-card" onclick="showBooks('Horror')">
+          <div class="genre-icon">💀</div>
+          <h3>Horror</h3>
+        </div>
+        <div class="genre-card" onclick="showBooks('Education')">
+          <div class="genre-icon">🎓</div>
+          <h3>Education</h3>
+        </div>
+        <div class="genre-card" onclick="showBooks('Adventure')">
+          <div class="genre-icon">🗡️</div>
+          <h3>Adventure</h3>
+        </div>
+        <div class="genre-card" onclick="showBooks('Mystery')">
+          <div class="genre-icon">🔍</div>
+          <h3>Mystery</h3>
+        </div>
+        <div class="genre-card" onclick="showBooks('Science Fiction')">
+          <div class="genre-icon">🌐</div>
+          <h3>Science Fiction</h3>
+        </div>
+        <div class="genre-card" onclick="showBooks('Poetry')">
+          <div class="genre-icon">📚</div>
+          <h3>Poetry</h3>
+        </div>
       </div>
-      <div class="genres"></div>
     </section>
 
     <!-- BOOKS -->
@@ -140,36 +179,58 @@
     <section id="settingsSection" class="content-section hidden">
       <div class="section-header">
         <h2>Profile Settings</h2>
-        <p>Update display name and avatar (local only).</p>
+        <p>Update your display name, avatar, and preferences. Saved locally.</p>
       </div>
-
-      <div class="settings-grid">
-        <div class="profile-card">
-          <img id="avatarPreview" src="" alt="avatar" class="avatar large" />
-          <div>
-            <label class="file-label">
-              <input type="file" id="avatarInput" accept="image/*" onchange="previewAvatar(event)">
-              Change avatar
-            </label>
-            <p id="currentUserInfo"></p>
+    
+      <div class="settings-card">
+        <!-- Left: Profile -->
+        <aside class="profile-side">
+          <div class="avatar-wrapper">
+            <img id="avatarPreview" src="" alt="avatar" class="avatar large" />
           </div>
-        </div>
-
-        <div class="profile-edit">
-          <input id="displayName" placeholder="Display name" />
-          <label>
-            Verified (toggle stored locally)
+          <label class="file-label">
+            <input type="file" id="avatarInput" accept="image/*" onchange="previewAvatar(event)">
+            Change Avatar
+          </label>
+          <p id="currentUserInfo" class="muted-text"></p>
+    
+          <!-- BADGES SECTION -->
+          <div class="badges-box">
+            <h3>🏅 Badges</h3>
+            <div id="badgeContainer" class="badge-list">
+              <!-- badges will be populated dynamically -->
+            </div>
+          </div>
+        </aside>
+    
+        <!-- Right: Form -->
+        <form class="profile-form" onsubmit="event.preventDefault(); saveProfile();">
+          <div class="form-group">
+            <label for="displayName">Display Name</label>
+            <input id="displayName" placeholder="Enter your display name" />
+          </div>
+    
+          <div class="form-group">
+            <label for="verifiedToggle">Verified</label>
             <select id="verifiedToggle">
               <option value="false">No</option>
               <option value="true">Yes</option>
             </select>
-          </label>
-
-          <div class="form-actions">
-            <button onclick="saveProfile()" class="primary">Save Profile</button>
-            <button onclick="showHome()" class="ghost">Back</button>
           </div>
-        </div>
+    
+          <div class="form-group">
+            <label>XP Progress</label>
+            <div class="progress-bar">
+              <div id="xpBar" class="progress-fill" style="width:0%"></div>
+            </div>
+            <small id="xpText">0 / 100 XP</small>
+          </div>
+    
+          <div class="form-actions">
+            <button type="submit" class="primary">💾 Save Profile</button>
+            <button type="button" onclick="showHome()" class="ghost">⬅ Back</button>
+          </div>
+        </form>
       </div>
     </section>
   </main>
@@ -178,7 +239,7 @@
     <small>Built with ❤️ — Trust Tales • Not for commercial use</small>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="app.js"></script>
   <script>feather.replace()</script>
 </body>
 </html>
